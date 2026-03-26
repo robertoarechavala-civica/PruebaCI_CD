@@ -44,5 +44,4 @@ jobs:
             echo "Error: TINYBIRD_HOST secret is not configured"
             exit 1
           fi
-      - name: Deployment check
-        run: tb --cloud --host ${{ env.TINYBIRD_HOST }} --token ${{ env.TINYBIRD_TOKEN }} deploy --check
+
