@@ -1,0 +1,12 @@
+DESCRIPTION >
+    A typical Tinybird datasource template
+
+SCHEMA >
+    `timestamp` DateTime,
+    `event_type` String,
+    `user_id` String,
+    `value` Float64
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(timestamp)"
+ENGINE_ORDER_BY "timestamp"
