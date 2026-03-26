@@ -5,5 +5,5 @@ SCHEMA >
     `value` Float
 
 ENGINE "MergeTree"
-PARTITION BY toYYYYMM(timestamp)
-ORDER BY timestamp
+ENGINE_PARTITION_KEY "toYYYYMM(timestamp)"
+ENGINE_SORTING_KEY "timestamp"
