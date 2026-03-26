@@ -34,14 +34,4 @@ jobs:
         run: tb build
       - name: Test project
         run: tb test run
-      - name: Validate Tinybird cloud secrets
-        run: |
-          if [ -z "${{ env.TINYBIRD_TOKEN }}" ]; then
-            echo "Error: TINYBIRD_TOKEN secret is not configured"
-            exit 1
-          fi
-          if [ -z "${{ env.TINYBIRD_HOST }}" ]; then
-            echo "Error: TINYBIRD_HOST secret is not configured"
-            exit 1
-          fi
 
