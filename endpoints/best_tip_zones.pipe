@@ -1,0 +1,33 @@
+TOKEN best_tips_read READ
+
+DESCRIPTION >
+    Endpoint that finds the zone most likely to have better tips for a given pickup location
+
+NODE pickup_zone_lookup
+SQL >
+    %
+    SELECT locationid
+    FROM taxi_zone_lookup
+    WHERE zone ILIKE concat('%', {{String(pickup_zone, 'JFK Airport')}}, '%')
+    LIMIT 1
+
+NODE tip_analysis
+SQL >
+    %
+    SELECT
+        t.DOLocationID,
+        tz.zone as destination_zone,
+        avg(t.tip_amount) as avg_tip,
+        count(*) as trip_count,
+        avg(t.tip_amount / nullif(t.total_amount, 0)) as tip_percentage
+    FROM trips t
+    LEFT JOIN taxi_zone_lookup tz ON t.DOLocationID = tz.locationid
+    WHERE t.PULocationID = (SELECT locationid FROM pickup_zone_lookup)
+        AND t.tip_amount > 0
+        AND t.total_amount > 0
+    GROUP BY t.DOLocationID, tz.zone
+    HAVING trip_count >= 10
+    ORDER BY avg_tip DESC
+    LIMIT 10
+
+TYPE endpoint
